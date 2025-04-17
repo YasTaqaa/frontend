@@ -1,4 +1,3 @@
-// store/userSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../utils/api';
 import { AxiosError } from 'axios';
@@ -18,7 +17,6 @@ interface AuthState {
   message: string;
 }
 
-// Get user data from localStorage
 const getUserFromStorage = (): User | null => {
   if (typeof window !== 'undefined') {
     const userJSON = localStorage.getItem('user');
@@ -35,12 +33,12 @@ const initialState: AuthState = {
   message: '',
 };
 
-// Register user
-export const register = createAsyncThunk(
-  'auth/register',
-  async (userData: { name: string; email: string; password: string }, thunkAPI) => {
+// Login user
+export const login = createAsyncThunk(
+  'auth/login',
+  async (userData: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await api.post('/api/auth', userData);  // Ensure this matches your backend route
+      const response = await api.post('/api/auth/login', userData);
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));
       }
@@ -57,16 +55,25 @@ export const register = createAsyncThunk(
   }
 );
 
-// Login user
-export const login = createAsyncThunk(
-  'auth/login',
-  async (userData: { email: string; password: string }, thunkAPI) => {
+// Register user and auto-login
+export const register = createAsyncThunk(
+  'auth/register',
+  async (userData: { name: string; email: string; password: string }, thunkAPI) => {
     try {
-      const response = await api.post('/api/auth/login', userData); // ✅ FIXED!
-      if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data));
+      // First, register the user
+      await api.post('/api/auth', userData);
+
+      // Then, immediately login the user
+      const loginResponse = await api.post('/api/auth/login', {
+        email: userData.email,
+        password: userData.password,
+      });
+
+      if (loginResponse.data) {
+        localStorage.setItem('user', JSON.stringify(loginResponse.data));
       }
-      return response.data;
+
+      return loginResponse.data;
     } catch (error: unknown) {
       let message = 'Something went wrong';
       if (error instanceof AxiosError && error.response?.data?.message) {

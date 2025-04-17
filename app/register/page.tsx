@@ -29,7 +29,7 @@ export default function Register() {
 
   useEffect(() => {
     if (isSuccess && user) {
-      router.push('/dashboard');
+      router.push('/login');
     }
 
     // Reset the auth state when component unmounts
