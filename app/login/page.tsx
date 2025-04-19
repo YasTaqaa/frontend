@@ -47,12 +47,6 @@ export default function Login() {
       isValid = false;
     }
 
-    // Untuk testing, nonaktifkan validasi format email:
-    // else if (!/\S+@\S+\.\S+/.test(email)) {
-    //   errors.email = 'Email is invalid';
-    //   isValid = false;
-    // }
-
     if (!password) {
       errors.password = 'Password is required';
       isValid = false;
@@ -97,7 +91,7 @@ export default function Login() {
                 Email
               </label>
               <input
-                type="text" // dari "email" diganti ke "text" agar input bebas
+                type="text" 
                 id="email"
                 name="email"
                 value={email}

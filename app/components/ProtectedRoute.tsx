@@ -22,8 +22,6 @@ export default function ProtectedRoute({
     }
   }, [user, router]);
 
-  // During SSR or initial client render before hydration,
-  // return the same structure as the children to avoid hydration mismatch
   if (!isClient) {
     return <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto py-10 px-4">
@@ -32,11 +30,9 @@ export default function ProtectedRoute({
     </div>;
   }
 
-  // After hydration, if no user, render nothing (we're redirecting)
   if (!user) {
     return null;
   }
 
-  // User is authenticated, render children
   return <>{children}</>;
 }

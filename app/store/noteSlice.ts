@@ -1,8 +1,7 @@
-// store/noteSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../utils/api';
 import { AxiosError } from 'axios';
-import { RootState } from './index'; // sesuaikan path jika perlu
+import { RootState } from './index';
 
 export interface Note {
   _id: string;

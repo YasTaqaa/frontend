@@ -60,10 +60,8 @@ export const register = createAsyncThunk(
   'auth/register',
   async (userData: { name: string; email: string; password: string }, thunkAPI) => {
     try {
-      // First, register the user
       await api.post('/api/auth', userData);
 
-      // Then, immediately login the user
       const loginResponse = await api.post('/api/auth/login', {
         email: userData.email,
         password: userData.password,

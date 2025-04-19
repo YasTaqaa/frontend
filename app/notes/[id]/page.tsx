@@ -26,7 +26,6 @@ export default function NoteDetail() {
     (state: RootState) => state.notes
   );
 
-  // Fetch note saat component load
   useEffect(() => {
     if (id) {
       dispatch(getNoteById(id as string));
@@ -37,7 +36,6 @@ export default function NoteDetail() {
     };
   }, [id, dispatch]);
 
-  // Set form dengan data note
   useEffect(() => {
     if (currentNote) {
       setFormData({
